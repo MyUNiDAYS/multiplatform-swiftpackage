@@ -1,6 +1,10 @@
 # Multiplatform Swift Package
 
-[![Build Status](https://travis-ci.com/ge-org/multiplatform-swiftpackage.svg?branch=master)](https://travis-ci.com/ge-org/multiplatform-swiftpackage)
+[//]: # ([![Build Status]&#40;https://travis-ci.com/ge-org/multiplatform-swiftpackage.svg?branch=master&#41;]&#40;https://travis-ci.com/ge-org/multiplatform-swiftpackage&#41;)
+
+This repository was a fork from the repo https://github.com/jizoquval/multiplatform-swiftpackage which is a fork of https://github.com/ge-org/multiplatform-swiftpackage 
+
+Due to there being no maintenance and changes made in the last few years, a fork has been made under the UNiDAYS organisation to ensure the project continues to have updates. We encourage pull requests from the open source community, please do, we can review and publish.
 
 This is a Gradle plugin for Kotlin Multiplatform projects that generates an XCFramework for your native Apple targets
 and creates a matching Package.swift file to distribute it as a binary target.
@@ -17,7 +21,7 @@ The plugin is published on Maven central. Add it to the `plugins` block in the G
 
 ```kotlin
 plugins {
-  id("com.chromaticnoise.multiplatform-swiftpackage") version "2.0.3"
+  id("com.myunidays.multiplatform-swiftpackage") version "2.0.3"
 }
 ```
 
@@ -164,20 +168,3 @@ To learn more about the Swift Package Manager I recommend reading the following 
 * https://swift.org/package-manager/
 * https://github.com/apple/swift-package-manager
 * https://docs.swift.org/package-manager/PackageDescription/PackageDescription.html
-
-## License
-```text
-Copyright 2020 Georg Dresler
-
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
-```

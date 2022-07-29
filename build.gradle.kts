@@ -16,7 +16,8 @@ plugins {
     signing
 }
 
-version = "2.0.3"
+version = "2.0.4"
+group = "com.myunidays"
 
 repositories {
     mavenCentral()
@@ -56,63 +57,77 @@ extensions.findByName("buildScan")?.withGroovyBuilder {
 gradlePlugin {
     plugins {
         create("pluginMaven") {
-            id = "com.chromaticnoise.multiplatform-swiftpackage"
-            implementationClass = "com.chromaticnoise.multiplatformswiftpackage.MultiplatformSwiftPackagePlugin"
+            id = "com.myunidays.multiplatform-swiftpackage"
+            implementationClass = "com.myunidays.multiplatformswiftpackage.MultiplatformSwiftPackagePlugin"
         }
     }
 }
 
-publishing {
-    publications {
-        create<MavenPublication>("pluginMaven") {
-            pom {
-                groupId = "com.chromaticnoise.multiplatform-swiftpackage"
-                artifactId = "com.chromaticnoise.multiplatform-swiftpackage.gradle.plugin"
-
-                name.set("Multiplatform Swift Package")
-                description.set("Gradle plugin to generate a Swift.package file and XCFramework to distribute a Kotlin Multiplatform iOS library")
-                url.set("https://github.com/ge-org/multiplatform-swiftpackage")
-
-                licenses {
-                    license {
-                        name.set("Apache License, Version 2.0")
-                        url.set("https://www.apache.org/licenses/LICENSE-2.0.txt")
-                    }
-                }
-                developers {
-                    developer {
-                        name.set("Georg Dresler")
-                    }
-                }
-                scm {
-                    connection.set("scm:git:https://github.com/ge-org/multiplatform-swiftpackage.git")
-                    developerConnection.set("scm:git:ssh://git@github.com/ge-org/multiplatform-swiftpackage.git")
-                    url.set("https://github.com/ge-org/multiplatform-swiftpackage")
-                }
-            }
-        }
-    }
-
-    repositories {
-        maven {
-            val releasesUrl = "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
-            val snapshotsUrl = "https://oss.sonatype.org/content/repositories/snapshots/"
-            name = "mavencentral"
-            url = uri(if (version.toString().endsWith("SNAPSHOT")) snapshotsUrl else releasesUrl)
-            credentials {
-                username = System.getenv("SONATYPE_NEXUS_USERNAME")
-                password = System.getenv("SONATYPE_NEXUS_PASSWORD")
-            }
-        }
-    }
-}
-
-signing {
-    sign(publishing.publications["pluginMaven"])
+fun SigningExtension.whenRequired(block: () -> Boolean) {
+    setRequired(block)
 }
 
 tasks.javadoc {
     if (JavaVersion.current().isJava9Compatible) {
         (options as StandardJavadocDocletOptions).addBooleanOption("html5", true)
     }
+}
+
+//val javadocJar by tasks.creating(Jar::class) {
+//    archiveClassifier.value("javadoc")
+//}
+
+publishing {
+    repositories {
+        maven {
+            url = uri("https://oss.sonatype.org/service/local/staging/deploy/maven2/")
+
+            credentials {
+                username = System.getenv("sonatypeUsernameEnv")
+                password = System.getenv("sonatypePasswordEnv")
+            }
+        }
+    }
+
+    publications.all {
+        this as MavenPublication
+
+//        artifact(javadocJar)
+
+        pom {
+            groupId = "com.myunidays.multiplatform-swiftpackage"
+            artifactId = "com.myunidays.multiplatform-swiftpackage.gradle.plugin"
+
+            name.set("Multiplatform Swift Package")
+            description.set("Gradle plugin to generate a Swift.package file and XCFramework to distribute a Kotlin Multiplatform iOS library")
+            url.set("https://github.com/myunidays/multiplatform-swiftpackage")
+
+            licenses {
+                license {
+                    name.set("Apache License, Version 2.0")
+                    url.set("https://www.apache.org/licenses/LICENSE-2.0.txt")
+                }
+            }
+            developers {
+                developer {
+                    id.set("Reedyuk")
+                    name.set("Andrew Reed")
+                    email.set("andrew.reed@myunidays.com")
+                }
+            }
+            scm {
+                connection.set("scm:git:https://github.com/myunidays/multiplatform-swiftpackage.git")
+                developerConnection.set("scm:git:ssh://git@github.com/myunidays/multiplatform-swiftpackage.git")
+                url.set("https://github.com/myunidays/multiplatform-swiftpackage")
+            }
+        }
+    }
+}
+
+signing {
+    whenRequired { gradle.taskGraph.hasTask("publish") }
+    val signingKey: String? by project
+    val signingPassword: String? by project
+    useInMemoryPgpKeys(signingKey, signingPassword)
+    sign(publishing.publications)
 }
