@@ -80,7 +80,6 @@ tasks.javadoc {
 publishing {
     repositories {
         maven {
-            name = "sonatype"
             url = uri("https://oss.sonatype.org/service/local/staging/deploy/maven2/")
 
             credentials {
