@@ -95,9 +95,6 @@ publishing {
 //        artifact(javadocJar)
 
         pom {
-            groupId = "com.myunidays.multiplatform-swiftpackage"
-            artifactId = "com.myunidays.multiplatform-swiftpackage.gradle.plugin"
-
             name.set("Multiplatform Swift Package")
             description.set("Gradle plugin to generate a Swift.package file and XCFramework to distribute a Kotlin Multiplatform iOS library")
             url.set("https://github.com/myunidays/multiplatform-swiftpackage")
