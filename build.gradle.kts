@@ -17,7 +17,7 @@ plugins {
 }
 
 version = "2.0.5"
-group = "com.myunidays"
+group = "com.myunidays.multiplatform-swiftpackage"
 
 repositories {
     mavenCentral()
