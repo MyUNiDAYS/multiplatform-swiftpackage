@@ -36,7 +36,6 @@ java {
     sourceCompatibility = JavaVersion.VERSION_1_8
     targetCompatibility = JavaVersion.VERSION_1_8
 
-    withJavadocJar()
     withSourcesJar()
 }
 
@@ -67,15 +66,15 @@ fun SigningExtension.whenRequired(block: () -> Boolean) {
     setRequired(block)
 }
 
-tasks.javadoc {
-    if (JavaVersion.current().isJava9Compatible) {
-        (options as StandardJavadocDocletOptions).addBooleanOption("html5", true)
-    }
-}
-
-//val javadocJar by tasks.creating(Jar::class) {
-//    archiveClassifier.value("javadoc")
+//tasks.javadoc {
+//    if (JavaVersion.current().isJava9Compatible) {
+//        (options as StandardJavadocDocletOptions).addBooleanOption("html5", true)
+//    }
 //}
+
+val javadocJar by tasks.creating(Jar::class) {
+    archiveClassifier.value("javadoc")
+}
 
 publishing {
     repositories {
@@ -92,7 +91,7 @@ publishing {
     publications.all {
         this as MavenPublication
 
-//        artifact(javadocJar)
+        artifact(javadocJar)
 
         pom {
             name.set("Multiplatform Swift Package")
